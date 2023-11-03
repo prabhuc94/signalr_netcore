@@ -1,8 +1,16 @@
-import 'app.dart';
 import 'package:flutter/material.dart';
 
-const kChatServerUrl = "http://192.168.0.4:5000";
 
 void main() {
-  runApp(App());
+  runApp(MyApp());
 }
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
