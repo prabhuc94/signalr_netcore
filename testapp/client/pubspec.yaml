@@ -20,7 +20,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
 
-  signalr_netcore:
+  signal_r_netcore:
     path: ../../
 
   rxdart : ^0.18.1
