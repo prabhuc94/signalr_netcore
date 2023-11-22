@@ -71,34 +71,38 @@ class WebSupportingHttpClient extends SignalRHttpClient {
       _logger?.finest(
           "HTTP send: url '${request.url}', method: '${request.method}' content: '${request.content}' content length = '${(request.content as String).length}' headers: '$headers'");
 
-      final httpRespFuture = await Future.any(
-          [_sendHttpRequest(httpClient, request, uri, headers), abortFuture]);
-      final httpResp = httpRespFuture as Response;
+      try {
+        final httpRespFuture = await Future.any(
+            [_sendHttpRequest(httpClient, request, uri, headers), abortFuture]);
+        final httpResp = httpRespFuture as Response;
 
-      if (request.abortSignal != null) {
-        request.abortSignal!.onabort = null;
-      }
-
-      if ((httpResp.statusCode >= 200) && (httpResp.statusCode < 300)) {
-        Object content;
-        final contentTypeHeader = httpResp.headers['content-type'];
-        final isJsonContent = contentTypeHeader == null ||
-            contentTypeHeader.startsWith('application/json');
-        if (isJsonContent) {
-          content = httpResp.body;
-        } else {
-          content = httpResp.body;
-          // When using SSE and the uri has an 'id' query parameter the response is not evaluated, otherwise it is an error.
-          if (isStringEmpty(uri.queryParameters['id'])) {
-            throw ArgumentError(
-                "Response Content-Type not supported: $contentTypeHeader");
-          }
+        if (request.abortSignal != null) {
+          request.abortSignal!.onabort = null;
         }
 
-        return SignalRHttpResponse(httpResp.statusCode,
-            statusText: httpResp.reasonPhrase, content: content);
-      } else {
-        throw HttpError(httpResp.reasonPhrase, httpResp.statusCode);
+        if ((httpResp.statusCode >= 200) && (httpResp.statusCode < 300)) {
+          Object content;
+          final contentTypeHeader = httpResp.headers['content-type'];
+          final isJsonContent = contentTypeHeader == null ||
+              contentTypeHeader.startsWith('application/json');
+          if (isJsonContent) {
+            content = httpResp.body;
+          } else {
+            content = httpResp.body;
+            // When using SSE and the uri has an 'id' query parameter the response is not evaluated, otherwise it is an error.
+            if (isStringEmpty(uri.queryParameters['id'])) {
+              throw ArgumentError(
+                  "Response Content-Type not supported: $contentTypeHeader");
+            }
+          }
+
+          return SignalRHttpResponse(httpResp.statusCode,
+              statusText: httpResp.reasonPhrase, content: content);
+        } else {
+          throw HttpError(httpResp.reasonPhrase, httpResp.statusCode);
+        }
+      } catch (e) {
+        return Future.error(e);
       }
     });
   }

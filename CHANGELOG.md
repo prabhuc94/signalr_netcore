@@ -119,4 +119,8 @@
 
 ## [0.0.1]
 
-* Intitial Version
+* Initial Version
+
+## [0.0.2]
+
+* Added try catch for api calls
