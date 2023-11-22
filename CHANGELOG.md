@@ -124,3 +124,7 @@
 ## [0.0.2]
 
 * Added try catch for api calls
+
+## [0.0.3]
+
+* Connection timeout increased

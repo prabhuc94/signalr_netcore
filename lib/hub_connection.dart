@@ -11,8 +11,8 @@ import 'ihub_protocol.dart';
 import 'iretry_policy.dart';
 import 'utils.dart';
 
-const int DEFAULT_TIMEOUT_IN_MS = 30 * 1000;
-const int DEFAULT_PING_INTERVAL_IN_MS = 15 * 1000;
+const int DEFAULT_TIMEOUT_IN_MS = 120 * 1000;
+const int DEFAULT_PING_INTERVAL_IN_MS = 60 * 1000;
 
 /// internal class to wrap emitting events once the {@link HubConnectionState} changes.
 class _HubConnectionStateMaintainer {
